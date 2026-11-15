@@ -138,8 +138,9 @@ st.markdown("""
         font-family: 'Jost', sans-serif;
         font-size: 1rem;
         color: #7a6168;
-        margin: 1.5rem auto 0 auto;
+        margin: 1.5rem auto 0 auto !important;
         max-width: 550px;
+        text-align: center;
         line-height: 1.8;
         font-weight: 300;
     }
@@ -573,7 +574,14 @@ def show_results(result):
     if tips:
         st.markdown("#### General tips")
         for tip in tips:
-            st.write(f"• {tip}")
+            if isinstance(tip, dict):
+                title = tip.get("title", "Tip")
+                text = tip.get("tip", "")
+                urgency = tip.get("urgency", "")
+                label = f" _(priority: {urgency})_" if urgency else ""
+                st.markdown(f"- **{title}** — {text}{label}")
+            else:
+                st.markdown(f"- {tip}")
 
     st.info("Introduce skincare ingredients gradually, patch test new products, and see a qualified "
             "dermatologist for persistent, painful, worsening or concerning skin issues.")
